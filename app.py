@@ -192,6 +192,7 @@ def edit_todo_action(id):
     flash('Todo not found or unauthorized')
   return redirect(url_for('todos_page'))
 
+
 @app.route('/deleteTodo/<id>', methods=["GET"])
 @jwt_required()
 def delete_todo_action(id):
@@ -201,7 +202,16 @@ def delete_todo_action(id):
   else:
     flash('Todo Deleted')
   return redirect(url_for('todos_page'))
-  
+
+
+@app.route('/logout', methods=['GET'])
+@jwt_required()
+def logout_action():
+  flash('Logged Out')
+  response = redirect(url_for('login_page'))
+  unset_jwt_cookies(response)
+  return response
+
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0', port=81)
