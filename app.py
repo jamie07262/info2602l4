@@ -69,9 +69,7 @@ def login_required(required_class):
     @wraps(f)
     @jwt_required()  # Ensure JWT authentication
     def decorated_function(*args, **kwargs):
-      user = required_class.query.filter_by(
-          username=get_jwt_identity()).first()
-      print(user.__class__, required_class, user.__class__ == required_class)
+      user = User.query.get(get_jwt_identity()) # get jwt identity resolves to the id of currently logged in user
       if user.__class__ != required_class:  # Check class equality
         return jsonify(message='Invalid user role'), 403
       return f(*args, **kwargs)
