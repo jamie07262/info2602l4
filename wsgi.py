@@ -4,19 +4,20 @@ from models import db, Todo, Admin, RegularUser, db, User
 from sqlalchemy.exc import IntegrityError
 from app import app
 
-
+db.init_app(app)
 
 
 @app.cli.command("init", help="Creates and initializes the database")
 def initialize():
   db.drop_all()
   db.create_all()
- 
+
   bob = RegularUser('bob', 'bob@mail.com', 'bobpass')
   rick = RegularUser('rick', 'rick@mail.com', 'rickpass')
   sally = RegularUser('sally', 'sally@mail.com', 'sallypass')
   pam = Admin('11111', 'pam', 'pam@mail.com', 'pampass')
-  db.session.add_all([bob, rick, sally, pam])  #add all can save multiple objects at once
+  db.session.add_all([bob, rick, sally,
+                      pam])  #add all can save multiple objects at once
   db.session.commit()
   #load todo data from csv file
   with open('todos.csv') as file:
